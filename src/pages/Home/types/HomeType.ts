@@ -4,7 +4,6 @@ export type ToDoItem = {
   id: string;
   title: string;
   completed: boolean;
-  editable: boolean;
 };
 
 export type ToDoCardPropsType = {
@@ -22,9 +21,13 @@ export type FormData = {
   todoTitle: string;
 };
 
-export const TodosFormSchema: ZodType<FormData> = z.object({
-  todoTitle: z
-    .string()
-    .min(1, { message: "Title is required" })
-    .min(3, { message: "Title must be at least 3 characters" }),
-});
+export const TodosFormSchema: ZodType<FormData> = z
+  .object({
+    todoTitle: z
+      .string()
+      .min(3, { message: "Title must be at least 3 characters" }),
+  })
+  .refine((data) => !!data.todoTitle.trim(), {
+    message: "Title cannot be empty",
+    path: ["todoTitle"],
+  });

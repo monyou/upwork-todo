@@ -15,7 +15,7 @@ const ToDoCard: FC<ToDoCardPropsType> = ({
 }) => {
   const {
     register,
-    formState: { errors, isValid },
+    formState: { errors },
     handleSubmit,
   } = useForm<FormData>({
     defaultValues: {
@@ -25,19 +25,13 @@ const ToDoCard: FC<ToDoCardPropsType> = ({
     resolver: zodResolver(TodosFormSchema),
   });
 
-  const updateTodo = (data: FormData) => {
-    if (!isValid) return;
-
-    onEdit(id, data.todoTitle);
-  };
-
   return (
     <div className="todo-card card text-bg-dark">
       <div className="card-body">
         {editable ? (
           <div>
             <form
-              onSubmit={handleSubmit(updateTodo)}
+              onSubmit={handleSubmit((data) => onEdit(id, data.todoTitle))}
               id="todo-form-input"
               className="d-flex gap-2"
             >
@@ -79,7 +73,7 @@ const ToDoCard: FC<ToDoCardPropsType> = ({
                 ></i>
                 {isCompleted ? "Mark Undone" : "Mark Completed"}
               </button>
-              <div className="d-flex">
+              <div className="d-flex flex-column flex-sm-row">
                 <button
                   className="btn text-light"
                   onClick={() => setEditable(id)}

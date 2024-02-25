@@ -5,13 +5,18 @@ import { FormData, ToDoItem, TodosFormSchema } from "./types/HomeType";
 import ToDoCard from "./ToDoCard";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useGlobalStore } from "../../stores/global";
 
 function Home() {
   const [todos, setTodos] = useState<ToDoItem[]>([]);
+  const [editableId, setEditableId] = useGlobalStore((state) => [
+    state.editableTodoId,
+    state.setEditableTodoId,
+  ]);
   const {
     register,
     reset,
-    formState: { errors, isValid },
+    formState: { errors },
     handleSubmit,
   } = useForm<FormData>({
     defaultValues: {
@@ -29,21 +34,16 @@ function Home() {
   }, []);
 
   const createTodo = (formData: FormData) => {
-    if (!isValid) return;
-
     const newTodo: ToDoItem = {
       id: uuid(),
-      title: formData.todoTitle,
+      title: formData.todoTitle.trim(),
       completed: false,
-      editable: false,
     };
-    const updatedTodos = [
-      ...todos.map((item) => ({ ...item, editable: false })),
-      newTodo,
-    ];
+    const updatedTodos = [...todos, newTodo];
     setTodos(updatedTodos);
     localStorage.setItem("todos", JSON.stringify(updatedTodos));
     toast.success("Todo created successfully");
+    setEditableId(null);
     reset();
   };
 
@@ -73,24 +73,15 @@ function Home() {
       if (todo.id === id) {
         return {
           ...todo,
-          title: newTitle,
-          editable: false,
+          title: newTitle.trim(),
         };
       }
       return todo;
     });
     setTodos(updatedTodos);
     localStorage.setItem("todos", JSON.stringify(updatedTodos));
+    setEditableId(null);
     toast.success("Todo updated successfully");
-  };
-
-  const setEditable = (id: string) => {
-    const updatedTodos = todos.map((todo) => ({
-      ...todo,
-      editable: todo.id === id,
-    }));
-    setTodos(updatedTodos);
-    localStorage.setItem("todos", JSON.stringify(updatedTodos));
   };
 
   return (
@@ -99,7 +90,7 @@ function Home() {
         <h1 className="text-center">My Todo List</h1>
 
         <div className="row justify-content-center mb-4 mt-2">
-          <div className="col-6">
+          <div className="col-11 col-lg-6">
             <form
               onSubmit={handleSubmit(createTodo)}
               id="todo-form-input"
@@ -119,7 +110,7 @@ function Home() {
             </form>
           </div>
           {errors.todoTitle && (
-            <div className="col-7 offset-1 mt-2">
+            <div className="offset-1 col-lg-7 mt-2">
               <span className="text-danger">{errors.todoTitle.message}</span>
             </div>
           )}
@@ -129,13 +120,13 @@ function Home() {
           <div id="todos-list">
             {todos.map((todo) => (
               <div key={todo.id} className="row justify-content-center mb-2">
-                <div className="col-6">
+                <div className="col-11 col-lg-6">
                   <ToDoCard
                     id={todo.id}
                     title={todo.title}
                     isCompleted={todo.completed}
-                    editable={todo.editable}
-                    setEditable={setEditable}
+                    editable={editableId === todo.id}
+                    setEditable={(id) => setEditableId(id)}
                     onToggleComplete={toggleComplete}
                     onDelete={deleteTodo}
                     onEdit={editTodo}
