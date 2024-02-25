@@ -86,11 +86,11 @@ function Home() {
 
   return (
     <>
-      <div id="home-page">
+      <div id="home-page" className="container-fluid">
         <h1 className="text-center">My Todo List</h1>
 
         <div className="row justify-content-center mb-4 mt-2">
-          <div className="col-11 col-lg-6">
+          <div className="col-12 col-lg-6">
             <form
               onSubmit={handleSubmit(createTodo)}
               id="todo-form-input"
@@ -120,7 +120,7 @@ function Home() {
           <div id="todos-list">
             {todos.map((todo) => (
               <div key={todo.id} className="row justify-content-center mb-2">
-                <div className="col-11 col-lg-6">
+                <div className="col-12 col-lg-6">
                   <ToDoCard
                     id={todo.id}
                     title={todo.title}
@@ -138,16 +138,7 @@ function Home() {
         )}
       </div>
 
-      <Toaster
-        toastOptions={{
-          className: "",
-          style: {
-            border: "1px solid #713200",
-            padding: "16px",
-            color: "#713200",
-          },
-        }}
-      />
+      <Toaster position="bottom-center" />
     </>
   );
 }
