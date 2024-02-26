@@ -1,9 +1,24 @@
-html,
-body {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    background-color: #282828;
-    color: white;
-    font-family: "Courier", monospace;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .form-control {
+        @apply block w-full rounded-md border px-3 py-1.5 text-gray-800;
+    }
+
+    .btn {
+        @apply rounded-md  px-3 py-1.5 text-center leading-6 text-white;
+    }
+
+    .btn-primary {
+        @apply btn bg-blue border-blue hover:bg-blue-hover hover:border-blue-hover border;
+    }
+
+    .btn-warning {
+        @apply btn bg-yellow border-yellow hover:bg-yellow-hover hover:border-yellow-hover border text-black;
+    }
+}
+
+@layer utilities {
 }

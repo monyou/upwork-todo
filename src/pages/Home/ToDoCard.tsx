@@ -26,79 +26,68 @@ const ToDoCard: FC<ToDoCardPropsType> = ({
   });
 
   return (
-    <div className="todo-card card text-bg-dark">
-      <div className="card-body">
-        {editable ? (
-          <div>
-            <form
-              onSubmit={handleSubmit((data) => onEdit(id, data.todoTitle))}
-              id="todo-form-input"
-              className="d-flex gap-2"
-            >
-              <input
-                type="text"
-                className="form-control"
-                {...register("todoTitle")}
-              />
+    <div className="todo-card rounded-md border border-black/20 bg-gray-800 p-4">
+      {editable ? (
+        <div>
+          <form
+            onSubmit={handleSubmit((data) => onEdit(id, data.todoTitle))}
+            id="todo-form-input"
+            className="flex gap-2"
+          >
+            <input
+              type="text"
+              className="form-control"
+              {...register("todoTitle")}
+            />
 
-              <button type="submit" className="btn btn-warning">
-                Update
-              </button>
-            </form>
-            {errors.todoTitle && (
-              <div className="mt-2">
-                <span className="text-danger">{errors.todoTitle.message}</span>
-              </div>
-            )}
-          </div>
-        ) : (
-          <>
-            <h5
-              className={`card-title ${isCompleted ? "text-decoration-line-through" : ""}`}
-            >
-              {title}
-            </h5>
-            <div className="d-flex justify-content-between mt-3">
-              <button
-                className="btn text-light"
-                onClick={() => onToggleComplete(id)}
-              >
-                <i
-                  style={{ marginRight: "10px" }}
-                  className={
-                    isCompleted
-                      ? "fa-solid fa-rotate"
-                      : "fa-regular fa-square-check"
-                  }
-                ></i>
-                {isCompleted ? "Mark Undone" : "Mark Completed"}
-              </button>
-              <div className="d-flex flex-column flex-sm-row">
-                <button
-                  className="btn text-light"
-                  onClick={() => setEditable(id)}
-                >
-                  <i
-                    style={{ marginRight: "5px" }}
-                    className="fa-regular fa-pen-to-square"
-                  ></i>
-                  Edit
-                </button>
-                <button
-                  className="btn text-danger"
-                  onClick={() => onDelete(id)}
-                >
-                  <i
-                    style={{ marginRight: "5px" }}
-                    className="fa-solid fa-trash"
-                  ></i>
-                  Delete
-                </button>
-              </div>
+            <button type="submit" className="btn-warning">
+              Update
+            </button>
+          </form>
+          {errors.todoTitle && (
+            <div className="mt-2">
+              <span className="text-danger">{errors.todoTitle.message}</span>
             </div>
-          </>
-        )}
-      </div>
+          )}
+        </div>
+      ) : (
+        <>
+          <h5 className={`mb-4 text-xl ${isCompleted ? "line-through" : ""}`}>
+            {title}
+          </h5>
+          <div className="mt-3 flex justify-between">
+            <button
+              className="btn outline-1 active:outline"
+              onClick={() => onToggleComplete(id)}
+            >
+              <i
+                className={
+                  isCompleted
+                    ? "fa-solid fa-rotate mr-2"
+                    : "fa-regular fa-square-check mr-2"
+                }
+              ></i>
+              {isCompleted ? "Mark Undone" : "Mark Completed"}
+            </button>
+            <div className="flex flex-col sm:flex-row">
+              <button
+                className="btn outline-1 active:outline"
+                onClick={() => setEditable(id)}
+              >
+                <i className="fa-regular fa-pen-to-square mr-1.5"></i>
+                Edit
+              </button>
+              <button
+                className="btn text-danger outline-1 active:outline"
+                onClick={() => onDelete(id)}
+              >
+                <i className="fa-solid fa-trash mr-1.5"></i>
+                Delete
+              </button>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

@@ -86,31 +86,29 @@ function Home() {
 
   return (
     <>
-      <div id="home-page" className="container-fluid">
-        <h1 className="text-center">My Todo List</h1>
+      <div id="home-page" className="w-full px-2">
+        <h1 className="text-center text-4xl font-medium">My Todo List</h1>
 
-        <div className="row justify-content-center mb-4 mt-2">
-          <div className="col-12 col-lg-6">
-            <form
-              onSubmit={handleSubmit(createTodo)}
-              id="todo-form-input"
-              className="d-flex gap-2"
-            >
-              <input
-                type="text"
-                className="form-control"
-                id="todoTitle"
-                placeholder="start typing ..."
-                {...register("todoTitle")}
-              />
+        <div className="mx-auto mb-6 mt-2 w-full lg:w-1/2">
+          <form
+            onSubmit={handleSubmit(createTodo)}
+            id="todo-form-input"
+            className="flex gap-2"
+          >
+            <input
+              type="text"
+              className="form-control"
+              id="todoTitle"
+              placeholder="Start typing ..."
+              {...register("todoTitle")}
+            />
 
-              <button type="submit" className="btn btn-primary">
-                Submit
-              </button>
-            </form>
-          </div>
+            <button type="submit" className="btn-primary">
+              Submit
+            </button>
+          </form>
           {errors.todoTitle && (
-            <div className="offset-1 col-lg-7 mt-2">
+            <div className="mt-2">
               <span className="text-danger">{errors.todoTitle.message}</span>
             </div>
           )}
@@ -119,19 +117,17 @@ function Home() {
         {!!todos.length && (
           <div id="todos-list">
             {todos.map((todo) => (
-              <div key={todo.id} className="row justify-content-center mb-2">
-                <div className="col-12 col-lg-6">
-                  <ToDoCard
-                    id={todo.id}
-                    title={todo.title}
-                    isCompleted={todo.completed}
-                    editable={editableId === todo.id}
-                    setEditable={(id) => setEditableId(id)}
-                    onToggleComplete={toggleComplete}
-                    onDelete={deleteTodo}
-                    onEdit={editTodo}
-                  />
-                </div>
+              <div key={todo.id} className="mx-auto mb-2 w-full lg:w-1/2">
+                <ToDoCard
+                  id={todo.id}
+                  title={todo.title}
+                  isCompleted={todo.completed}
+                  editable={editableId === todo.id}
+                  setEditable={(id) => setEditableId(id)}
+                  onToggleComplete={toggleComplete}
+                  onDelete={deleteTodo}
+                  onEdit={editTodo}
+                />
               </div>
             ))}
           </div>
